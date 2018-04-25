@@ -1,0 +1,97 @@
+UNCOMMENT IMPORTS
+
+
+
+    	//Date date = new Date() ;
+		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+		//File file = new File(dateFormat.format(date) + ".tsv") ;
+		//BufferedWriter out = Files.newWriter(file, StandardCharsets.UTF_8);
+
+		//Get current test results
+		//Also look up AbstractTestResultAction
+		AggregatedTestResultAction currentTestResults = run.getAction(AggregatedTestResultAction.class);
+
+		//retrieve the test results 
+		List<AggregatedTestResultAction.ChildReport> currentResults = currentTestResults.getResult();
+
+        listener.getLogger().println("Running Test Checker Plugin");
+
+        //listener.getLogger().println("Current Build :- ", currentTestResults.getDisplayName());
+        //listener.getLogger().println("Previous Build :- ", currentTestResults.getDisplayName());
+
+
+		//iterate through the result of each test
+		for(int i = 0; i < currentResults.size(); i++)
+		{
+
+			//obtain the report of a test
+			AggregatedTestResultAction.ChildReport child = currentResults.get(i);
+
+			//Retrieve the test result
+			TestResult currentTestResultChild = (TestResult)child.result;
+
+			//get the passed tests 
+			ArrayList<TestResult> currRes = ((ArrayList<TestResult>)currentTestResultChild.getPassedTests());
+
+			//iterate through each passed test
+			for(int j = 0; j < currRes.size(); j++)
+			{
+				//obtain the status of the test in current build
+				TestResult currentTestResChild = currRes.get(j);
+
+				//obtain the status of the test in previous build
+				TestResult previousTestResChild = currRes.get(j).getPreviousResult();
+
+				// Check previous test result isnt null
+				if (previousTestResChild == null) continue;
+	
+				// Case 1: Both passed
+				if (currentTestResChild.isPassed() && previousTestResChild.isPassed())
+				{
+					listener.getLogger().println("No Change (Passed) : " + currentTestResChild.getDisplayName());
+					//out.write("No Change (Passed) : " + currentTestResChild.getDisplayName());
+				}
+				// Case 2: Previous failed, newly passed
+				if (currentTestResChild.isPassed() && !previousTestResChild.isPassed())
+				{
+
+					//out.write("Newly Passing Test : " + currentTestResChild.getDisplayName());
+					listener.getLogger().println("Newly Passing Test : " + currentTestResChild.getDisplayName());
+				}
+			}
+
+			//get the failed tests 
+			ArrayList<TestResult> currResF = ((ArrayList<TestResult>)currentTestResultChild.getFailedTests());
+
+			//iterate through each failed test
+			for(int k = 0; k < currResF.size(); k++)
+			{
+				//obtain the status of the test in current build
+				TestResult currentTestResChild = currResF.get(k);
+
+				//obtain the status of the test in previous build
+				TestResult previousTestResChild = currResF.get(k).getPreviousResult();
+				// Check previous test result isn't null
+				if (previousTestResChild == null) continue;
+
+				// Case 3: Both failed
+				if (!currentTestResChild.isPassed() && !previousTestResChild.isPassed())
+				{
+					//out.write("No Change (Failed) : " + currentTestResChild.getDisplayName());
+					listener.getLogger().println("No Change (Failed) : " + currentTestResChild.getDisplayName());
+				}       
+				// Case 4: Previous passed, newly failed
+				if (!currentTestResChild.isPassed() && previousTestResChild.isPassed())
+				{
+					out.write("Newly Failing Test : " + currentTestResChild.getDisplayName());
+					listener.getLogger().println("Newly Failing Test : " + currentTestResChild.getDisplayName());
+				}
+			}
+		}
+		//obtain the information from previous build
+		//Run<?, ?> previousBuiltBuild = run.getPreviousBuiltBuild();
+
+
+		// try to read the test suite file from the workspace
+		//InputStream inputStream = workspace.child(testSuiteFile).read();
+		//out.close();

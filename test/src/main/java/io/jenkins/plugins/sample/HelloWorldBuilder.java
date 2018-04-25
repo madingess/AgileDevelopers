@@ -186,31 +186,6 @@ public class HelloWorldBuilder extends Recorder implements SimpleBuildStep {
     }
 
 	@Override
-	public boolean prebuild(AbstractBuild<?, ?> build, BuildListener listener) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
-			throws InterruptedException, IOException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Action getProjectAction(AbstractProject<?, ?> project) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<? extends Action> getProjectActions(AbstractProject<?, ?> project) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public BuildStepMonitor getRequiredMonitorService() {
 		// TODO Auto-generated method stub
 		return BuildStepMonitor.NONE;

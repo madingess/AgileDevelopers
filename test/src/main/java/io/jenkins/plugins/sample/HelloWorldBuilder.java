@@ -2,11 +2,11 @@ package io.jenkins.plugins.sample;
 
 import hudson.Launcher;
 
-//import hudson.tasks.test.TestResult;
-//import hudson.tasks.test.AbstractTestResultAction;
-//import hudson.tasks.test.AbstractTestResultAction.*;
-//import hudson.tasks.test.AggregatedTestResultAction;
-//import hudson.tasks.test.AggregatedTestResultAction.ChildReport;
+import hudson.tasks.test.TestResult;
+import hudson.tasks.test.AbstractTestResultAction;
+import hudson.tasks.test.AbstractTestResultAction.*;
+import hudson.tasks.test.AggregatedTestResultAction;
+import hudson.tasks.test.AggregatedTestResultAction.ChildReport;
 
 import hudson.Extension;
 import hudson.FilePath;
@@ -33,7 +33,7 @@ import jenkins.tasks.SimpleBuildStep;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundSetter;
 
-public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
+public class HelloWorldBuilder extends Recorder implements SimpleBuildStep {
 
     private final String name;
     private boolean useFrench;
@@ -58,11 +58,6 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
 
     @Override
     public void perform(Run<?, ?> run, FilePath workspace, Launcher launcher, TaskListener listener) throws InterruptedException, IOException {
-        if (useFrench) {
-            listener.getLogger().println(name);
-        } else {
-            listener.getLogger().println(name);
-        }
 		{
 		//Date date = new Date() ;
 		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
